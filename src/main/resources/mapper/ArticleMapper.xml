@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mock.mapper.ArticleMapper">
+
+    <insert id="insert">
+        insert into mc_article (
+             title,
+             author,
+             content,
+             release_date,
+             likes
+         ) value (
+             #{title},
+             #{author},
+             #{content},
+             #{releaseDate},
+             #{likes}
+         )
+    </insert>
+
+    <update id="update">
+        update mc_article
+        <set>
+            <if test="title != null and title != ''">
+                title = #{title},
+            </if>
+            <if test="author != null and author != ''">
+                author = #{author},
+            </if>
+            <if test="content != null and content != ''">
+                content = #{content},
+            </if>
+            <if test="releaseDate != null">
+                release_date = #{releaseDate},
+            </if>
+            <if test="likes != null">
+                likes = #{likes},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="findById" resultType="com.example.mock.entity.Article">
+        select id,
+               title,
+               author,
+               content,
+               release_date,
+               likes
+        from mc_article
+        where id = #{id}
+    </select>
+
+    <select id="findList" resultType="com.example.mock.entity.Article">
+        select id,
+               title,
+               author,
+               content,
+               release_date,
+               likes
+        from mc_article
+        <where>
+            <if test="title != null and title != ''">
+                and title = #{title}
+            </if>
+            <if test="author != null and author != ''">
+                and author = #{author}
+            </if>
+        </where>
+    </select>
+
+    <select id="getLikesById" resultType="java.lang.Long">
+        select likes
+        from mc_article
+        where id = #{id}
+    </select>
+</mapper>
